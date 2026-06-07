@@ -16,1521 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #0f0f0d;
-    --cream: #f5f2ed;
-    --warm-white: #faf9f6;
-    --gold: #b89a5e;
-    --gold-light: #d4b97a;
-    --muted: #8a8478;
-    --border: #e2ddd6;
-    --green-accent: #3d5a47;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--warm-white);
-    color: var(--ink);
-    overflow-x: hidden;
-    font-weight: 300;
-  }
-
-  body.menu-open { overflow: hidden; }
-
-  :focus-visible {
-    outline: 2px solid var(--gold);
-    outline-offset: 4px;
-  }
-
-  #about,
-  #services,
-  #clients,
-  #packages,
-  #contact {
-    scroll-margin-top: 96px;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 1.4rem 4rem;
-    background: rgba(250, 249, 246, 0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    transition: padding 0.3s ease;
-  }
-
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--gold); }
-
-  .nav-links {
-    display: flex; gap: 2.5rem; list-style: none;
-  }
-  .nav-links a {
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--ink); }
-
-  .nav-cta {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-decoration: none;
-    border-bottom: 1px solid var(--gold);
-    padding-bottom: 2px;
-    transition: opacity 0.2s;
-  }
-  .nav-cta:hover { opacity: 0.7; }
-
-  .mobile-toggle {
-    display: none;
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--border);
-    background: rgba(250, 249, 246, 0.76);
-    color: var(--ink);
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-  .mobile-toggle-lines {
-    width: 18px;
-    height: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .mobile-toggle-lines span {
-    display: block;
-    height: 1px;
-    background: currentColor;
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-  .mobile-toggle[aria-expanded="true"] .mobile-toggle-lines span:first-child {
-    transform: translateY(5.5px) rotate(45deg);
-  }
-  .mobile-toggle[aria-expanded="true"] .mobile-toggle-lines span:last-child {
-    transform: translateY(-5.5px) rotate(-45deg);
-  }
-  .mobile-menu {
-    display: none;
-  }
-
-  /* ─── HERO ─── */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-left {
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 8rem 5rem 6rem 4rem;
-    position: relative; z-index: 2;
-  }
-
-  .hero-eyebrow {
-    font-size: 0.7rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 2rem;
-    display: flex; align-items: center; gap: 1rem;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 2.5rem; height: 1px;
-    background: var(--gold);
-  }
-
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 5vw, 5.2rem);
-    font-weight: 300;
-    line-height: 1.08;
-    letter-spacing: -0.01em;
-    margin-bottom: 2rem;
-    color: var(--ink);
-  }
-  .hero-title em {
-    font-style: italic;
-    color: var(--gold);
-  }
-
-  .hero-subtitle {
-    font-size: 0.92rem;
-    line-height: 1.75;
-    color: var(--muted);
-    max-width: 36ch;
-    margin-bottom: 3rem;
-  }
-
-  .hero-actions {
-    display: flex; align-items: center; gap: 2.5rem;
-  }
-
-  .btn-primary {
-    display: inline-block;
-    padding: 1rem 2.4rem;
-    background: var(--ink);
-    color: var(--warm-white);
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.25s, transform 0.2s;
-  }
-  .btn-primary:hover { background: var(--green-accent); transform: translateY(-1px); }
-
-  .btn-ghost {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink);
-    text-decoration: none;
-    display: flex; align-items: center; gap: 0.6rem;
-    transition: gap 0.2s;
-  }
-  .btn-ghost::after { content: '→'; font-size: 1rem; }
-  .btn-ghost:hover { gap: 1rem; }
-
-  .hero-right {
-    position: relative;
-    background: var(--cream);
-    overflow: hidden;
-  }
-
-  .hero-image-area {
-    position: absolute; inset: 0;
-    background:
-      linear-gradient(135deg, #e8e2d9 0%, #d4cdc4 100%);
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .hero-geo {
-    position: absolute;
-    width: 420px; height: 420px;
-    border: 1px solid rgba(184, 154, 94, 0.3);
-    border-radius: 50%;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    animation: spin-slow 40s linear infinite;
-  }
-  .hero-geo::before {
-    content: '';
-    position: absolute; inset: 30px;
-    border: 1px solid rgba(184, 154, 94, 0.15);
-    border-radius: 50%;
-  }
-  .hero-geo::after {
-    content: '';
-    position: absolute; inset: 70px;
-    border: 1px solid rgba(184, 154, 94, 0.1);
-    border-radius: 50%;
-  }
-
-  .hero-stat-block {
-    position: absolute;
-    bottom: 3rem; left: 3rem;
-    background: var(--warm-white);
-    padding: 1.5rem 2rem;
-    border-left: 3px solid var(--gold);
-  }
-  .hero-stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.2rem;
-    font-weight: 300;
-    color: var(--ink);
-    line-height: 1;
-  }
-  .hero-stat-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 0.3rem;
-  }
-
-  .hero-badge {
-    position: absolute;
-    top: 2.5rem; right: 2.5rem;
-    width: 90px; height: 90px;
-    border-radius: 50%;
-    border: 1px solid var(--gold);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center;
-    animation: rotate-badge 20s linear infinite;
-  }
-  .hero-badge-text {
-    font-size: 0.55rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    line-height: 1.6;
-  }
-
-  .hero-scroll {
-    position: absolute; bottom: 2.5rem; left: 50%;
-    transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  }
-  .hero-scroll span {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    transform: rotate(90deg);
-    transform-origin: center;
-  }
-  .scroll-line {
-    width: 1px; height: 50px;
-    background: linear-gradient(to bottom, var(--gold), transparent);
-    animation: scroll-pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes spin-slow { to { transform: translate(-50%, -50%) rotate(360deg); } }
-  @keyframes rotate-badge { to { transform: rotate(360deg); } }
-  @keyframes scroll-pulse {
-    0%, 100% { opacity: 0.4; transform: scaleY(0.8); }
-    50% { opacity: 1; transform: scaleY(1); }
-  }
-
-  /* ─── MARQUEE ─── */
-  .marquee-bar {
-    background: var(--ink);
-    padding: 0.9rem 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .marquee-track {
-    display: inline-flex; gap: 0;
-    animation: marquee 25s linear infinite;
-  }
-  .marquee-item {
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    padding: 0 2.5rem;
-  }
-  .marquee-dot {
-    color: rgba(184,154,94,0.4);
-    padding: 0 0.5rem;
-  }
-  @keyframes marquee { to { transform: translateX(-50%); } }
-
-  /* ─── ABOUT ─── */
-  .section { padding: 7rem 4rem; }
-
-  .about {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6rem;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.5rem;
-    display: flex; align-items: center; gap: 1rem;
-  }
-  .section-label::before {
-    content: '';
-    display: inline-block;
-    width: 2rem; height: 1px;
-    background: var(--gold);
-  }
-
-  .section-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 3.5vw, 3.2rem);
-    font-weight: 300;
-    line-height: 1.15;
-    margin-bottom: 1.8rem;
-  }
-  .section-heading em { font-style: italic; color: var(--gold); }
-
-  .body-text {
-    font-size: 0.92rem;
-    line-height: 1.85;
-    color: var(--muted);
-    margin-bottom: 1.2rem;
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-top: 2.5rem;
-    border-top: 1px solid var(--border);
-    padding-top: 2.5rem;
-  }
-  .stat-item {}
-  .stat-value {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.4rem;
-    font-weight: 300;
-    color: var(--ink);
-    line-height: 1;
-  }
-  .stat-unit {
-    font-size: 1rem;
-    color: var(--gold);
-  }
-  .stat-desc {
-    font-size: 0.72rem;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-    margin-top: 0.4rem;
-    text-transform: uppercase;
-  }
-
-  .about-visual {
-    position: relative;
-    height: 500px;
-  }
-  .about-card-main {
-    position: absolute;
-    inset: 0;
-    background: var(--cream);
-    display: flex; flex-direction: column;
-    justify-content: flex-end;
-    padding: 2.5rem;
-    overflow: hidden;
-  }
-  .about-card-bg {
-    position: absolute; inset: 0;
-    background: linear-gradient(160deg, #ede8e0 0%, #d8d1c7 100%);
-  }
-  .about-card-lines {
-    position: absolute; inset: 0; overflow: hidden;
-  }
-  .about-card-lines::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 300px; height: 300px;
-    border-radius: 50%;
-    border: 60px solid rgba(184, 154, 94, 0.1);
-  }
-  .about-card-tag {
-    position: relative; z-index: 2;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.8rem;
-  }
-  .about-card-quote {
-    position: relative; z-index: 2;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-style: italic;
-    font-weight: 300;
-    line-height: 1.4;
-    color: var(--ink);
-  }
-  .about-card-float {
-    position: absolute;
-    top: 2rem; right: -1.5rem;
-    background: var(--ink);
-    color: var(--warm-white);
-    padding: 1.5rem;
-    width: 160px;
-    z-index: 3;
-  }
-  .about-card-float-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 300;
-    color: var(--gold);
-    line-height: 1;
-  }
-  .about-card-float-text {
-    font-size: 0.68rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.6);
-    margin-top: 0.4rem;
-    line-height: 1.4;
-  }
-
-  /* ─── SERVICES ─── */
-  .services-section { background: var(--cream); }
-
-  .services-header {
-    text-align: center;
-    max-width: 680px;
-    margin: 0 auto 5rem;
-  }
-
-  .tiers {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex; flex-direction: column; gap: 4rem;
-  }
-
-  .tier-block {}
-  .tier-label {
-    display: flex; align-items: center; gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  .tier-tag {
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--warm-white);
-    background: var(--green-accent);
-    padding: 0.35rem 0.9rem;
-  }
-  .tier-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 400;
-    color: var(--ink);
-  }
-  .tier-model {
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-left: auto;
-  }
-  .tier-divider {
-    height: 1px; background: var(--border);
-    flex: 1; min-width: 2rem;
-  }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5px;
-    background: var(--border);
-  }
-
-  .service-card {
-    background: var(--warm-white);
-    padding: 2.2rem;
-    transition: background 0.3s;
-    cursor: default;
-    position: relative;
-    overflow: hidden;
-  }
-  .service-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 0;
-    background: var(--gold);
-    transition: width 0.3s ease;
-  }
-  .service-card:hover { background: var(--cream); }
-  .service-card:hover::before { width: 3px; }
-
-  .service-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 300;
-    color: var(--border);
-    line-height: 1;
-    margin-bottom: 0.8rem;
-    transition: color 0.3s;
-  }
-  .service-card:hover .service-number { color: rgba(184,154,94,0.2); }
-
-  .service-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.25rem;
-    font-weight: 500;
-    color: var(--ink);
-    margin-bottom: 0.6rem;
-    line-height: 1.2;
-  }
-
-  .service-sub {
-    font-size: 0.78rem;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 1.2rem;
-  }
-
-  .service-bullets {
-    list-style: none;
-    display: flex; flex-direction: column; gap: 0.5rem;
-  }
-  .service-bullets li {
-    font-size: 0.77rem;
-    color: var(--muted);
-    padding-left: 1rem;
-    position: relative;
-    line-height: 1.5;
-  }
-  .service-bullets li::before {
-    content: '—';
-    position: absolute; left: 0;
-    color: var(--gold);
-    font-size: 0.7rem;
-  }
-
-  /* ─── WHO WE SERVE ─── */
-  .clients-section {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .clients-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 2px;
-    background: var(--border);
-    margin-top: 4rem;
-  }
-
-  .client-card {
-    background: var(--warm-white);
-    padding: 3rem 2.5rem;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-  .client-card:hover { background: var(--ink); }
-  .client-card:hover .client-icon,
-  .client-card:hover .client-title,
-  .client-card:hover .client-desc { color: var(--warm-white); }
-  .client-card:hover .client-gold { color: var(--gold-light); }
-
-  .client-icon {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    transition: color 0.3s;
-  }
-  .client-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    font-weight: 500;
-    margin-bottom: 0.8rem;
-    transition: color 0.3s;
-  }
-  .client-gold {
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1rem;
-    transition: color 0.3s;
-  }
-  .client-desc {
-    font-size: 0.82rem;
-    line-height: 1.7;
-    color: var(--muted);
-    transition: color 0.3s;
-  }
-
-  /* ─── PACKAGES ─── */
-  .packages-section { background: var(--ink); }
-  .packages-section .section-label { color: var(--gold); }
-  .packages-section .section-label::before { background: var(--gold); }
-  .packages-section .section-heading { color: var(--warm-white); }
-  .packages-section .section-heading em { color: var(--gold); }
-
-  .packages-header {
-    max-width: 1200px; margin: 0 auto 4rem;
-    display: flex; justify-content: space-between; align-items: flex-end;
-    flex-wrap: wrap; gap: 2rem;
-  }
-
-  .packages-grid {
-    max-width: 1200px; margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5px;
-    background: rgba(255,255,255,0.08);
-  }
-
-  .package-card {
-    background: var(--ink);
-    border: 1px solid rgba(255,255,255,0.07);
-    padding: 3rem 2.5rem;
-    position: relative;
-    transition: border-color 0.3s;
-  }
-  .package-card:hover { border-color: var(--gold); }
-  .package-card.featured {
-    background: var(--green-accent);
-    border-color: transparent;
-  }
-
-  .package-tag {
-    font-size: 0.62rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 2rem;
-  }
-  .package-card.featured .package-tag { color: rgba(255,255,255,0.6); }
-
-  .package-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 400;
-    color: var(--warm-white);
-    margin-bottom: 0.5rem;
-  }
-
-  .package-ideal {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 2rem;
-  }
-  .package-card.featured .package-ideal { color: rgba(255,255,255,0.6); }
-
-  .package-price {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 300;
-    color: var(--gold-light);
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-  .package-card.featured .package-price { color: var(--warm-white); }
-
-  .package-price-note {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.35);
-    margin-bottom: 2rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .package-features {
-    list-style: none;
-    display: flex; flex-direction: column; gap: 0.8rem;
-    margin-bottom: 2.5rem;
-  }
-  .package-features li {
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.65);
-    padding-left: 1.2rem;
-    position: relative;
-    line-height: 1.5;
-  }
-  .package-features li::before {
-    content: '✓';
-    position: absolute; left: 0;
-    color: var(--gold);
-    font-size: 0.7rem;
-  }
-  .package-card.featured .package-features li { color: rgba(255,255,255,0.85); }
-
-  .package-btn {
-    display: block;
-    text-align: center;
-    padding: 0.9rem 1.5rem;
-    border: 1px solid rgba(255,255,255,0.2);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--warm-white);
-    text-decoration: none;
-    transition: all 0.25s;
-  }
-  .package-btn:hover {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: var(--ink);
-  }
-  .package-card.featured .package-btn {
-    background: var(--warm-white);
-    border-color: var(--warm-white);
-    color: var(--ink);
-  }
-  .package-card.featured .package-btn:hover {
-    background: var(--gold);
-    border-color: var(--gold);
-  }
-
-  /* ─── PROCESS ─── */
-  .process-section {
-    background: var(--warm-white);
-  }
-  .process-inner {
-    max-width: 1200px; margin: 0 auto;
-  }
-  .process-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 3rem;
-    margin-top: 4rem;
-    position: relative;
-  }
-  .process-steps::before {
-    content: '';
-    position: absolute;
-    top: 1.4rem; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(to right, var(--gold), transparent 90%);
-  }
-  .process-step {}
-  .step-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--gold);
-    letter-spacing: 0.08em;
-    margin-bottom: 1.5rem;
-    position: relative;
-    display: inline-block;
-  }
-  .step-num::before {
-    content: '';
-    position: absolute;
-    left: 50%; top: -1.5rem;
-    transform: translateX(-50%);
-    width: 6px; height: 6px;
-    background: var(--gold);
-    border-radius: 50%;
-  }
-  .step-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-bottom: 0.6rem;
-  }
-  .step-desc {
-    font-size: 0.8rem;
-    line-height: 1.7;
-    color: var(--muted);
-  }
-
-  /* ─── CTA ─── */
-  .cta-section {
-    background: var(--cream);
-    text-align: center;
-    padding: 8rem 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .cta-bg-circle {
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    border: 1px solid rgba(184,154,94,0.12);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .cta-bg-circle::before {
-    content: '';
-    position: absolute; inset: 60px;
-    border-radius: 50%;
-    border: 1px solid rgba(184,154,94,0.08);
-  }
-  .cta-inner {
-    position: relative; z-index: 2;
-    max-width: 620px; margin: 0 auto;
-  }
-  .cta-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.4rem, 4vw, 4rem);
-    font-weight: 300;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-  }
-  .cta-heading em { font-style: italic; color: var(--gold); }
-  .cta-sub {
-    font-size: 0.9rem;
-    color: var(--muted);
-    margin-bottom: 3rem;
-    line-height: 1.7;
-  }
-  .cta-actions {
-    display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap;
-  }
-
-  /* ─── FOOTER ─── */
-  footer {
-    background: var(--ink);
-    padding: 4rem 4rem 2rem;
-  }
-  .footer-top {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 4rem;
-    padding-bottom: 3rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    margin-bottom: 2rem;
-  }
-  .footer-brand-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 300;
-    color: var(--warm-white);
-    margin-bottom: 1rem;
-  }
-  .footer-brand-name span { color: var(--gold); }
-  .footer-brand-desc {
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.35);
-    line-height: 1.7;
-    max-width: 28ch;
-    margin-bottom: 1.5rem;
-  }
-  .footer-col-title {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 1.2rem;
-  }
-  .footer-links {
-    list-style: none;
-    display: flex; flex-direction: column; gap: 0.7rem;
-  }
-  .footer-links a {
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.4);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--warm-white); }
-  .footer-bottom {
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 1rem;
-  }
-  .footer-copy {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.25);
-  }
-  .footer-tagline {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 0.85rem;
-    font-style: italic;
-    color: rgba(255,255,255,0.25);
-  }
-
-  /* ─── ANIMATIONS ─── */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 900px) {
-    nav { padding: 1rem 2rem; }
-    .nav-links { display: none; }
-    .nav-cta { display: none; }
-    .mobile-toggle { display: inline-flex; }
-    .mobile-menu {
-      position: fixed;
-      top: 73px;
-      left: 0;
-      right: 0;
-      z-index: 90;
-      display: grid;
-      gap: 0;
-      padding: 0.75rem 2rem 1.5rem;
-      background: rgba(250, 249, 246, 0.98);
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 18px 40px rgba(15, 15, 13, 0.08);
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-8px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-    .mobile-menu.open {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-    .mobile-menu a {
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.76rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink);
-      text-decoration: none;
-    }
-    .mobile-menu a:last-child {
-      border-bottom: 0;
-      color: var(--gold);
-    }
-    .hero { grid-template-columns: 1fr; }
-    .hero-right { display: none; }
-    .hero-left { padding: 8rem 2rem 4rem; }
-    .hero-actions { align-items: flex-start; flex-direction: column; gap: 1.25rem; }
-    .about { grid-template-columns: 1fr; gap: 3rem; }
-    .about-visual { height: 300px; }
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .clients-grid { grid-template-columns: 1fr; }
-    .packages-grid { grid-template-columns: 1fr; }
-    .process-steps { grid-template-columns: repeat(2, 1fr); }
-    .process-steps::before { display: none; }
-    .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
-    .section { padding: 5rem 2rem; }
-  }
-
-  @media (max-width: 560px) {
-    nav { padding: 0.9rem 1.25rem; }
-    .mobile-menu { top: 69px; padding-inline: 1.25rem; }
-    .section { padding: 4.5rem 1.25rem; }
-    .hero-left { padding: 7rem 1.25rem 4rem; }
-    .hero-title { font-size: clamp(2.75rem, 14vw, 4rem); }
-    .tier-label { align-items: flex-start; flex-direction: column; gap: 0.8rem; }
-    .tier-divider { display: none; }
-    .process-steps { grid-template-columns: 1fr; gap: 2rem; }
-    .footer-top,
-    .footer-bottom { grid-template-columns: 1fr; }
-    .footer-bottom { align-items: flex-start; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-    .fade-up {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  /* Enterprise redesign layer */
-  body {
-    background:
-      linear-gradient(90deg, rgba(226,221,214,0.32) 1px, transparent 1px) 0 0 / 72px 72px,
-      linear-gradient(180deg, rgba(226,221,214,0.26) 1px, transparent 1px) 0 0 / 72px 72px,
-      var(--warm-white);
-  }
-
-  nav {
-    left: 1.25rem;
-    right: 1.25rem;
-    top: 1rem;
-    border: 1px solid rgba(226,221,214,0.86);
-    border-radius: 8px;
-    background: rgba(250,249,246,0.88);
-    box-shadow: 0 18px 50px rgba(15,15,13,0.07);
-  }
-
-  .nav-logo img {
-    height: 42px !important;
-  }
-
-  .nav-links {
-    gap: 0.25rem;
-    padding: 0.35rem;
-    border: 1px solid rgba(226,221,214,0.62);
-    background: rgba(245,242,237,0.72);
-    border-radius: 8px;
-  }
-
-  .nav-links a {
-    display: block;
-    padding: 0.7rem 0.95rem;
-    border-radius: 6px;
-    letter-spacing: 0.08em;
-  }
-
-  .nav-links a:hover {
-    color: var(--ink);
-    background: var(--warm-white);
-  }
-
-  .nav-cta {
-    padding: 0.85rem 1.15rem;
-    border: 1px solid rgba(184,154,94,0.45);
-    border-radius: 6px;
-    background: rgba(184,154,94,0.08);
-  }
-
-  .hero {
-    min-height: 100vh;
-    grid-template-columns: minmax(0, 0.95fr) minmax(420px, 1.05fr);
-    padding: 7.5rem 4rem 3.5rem;
-    gap: 3rem;
-    align-items: stretch;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 78% 22%, rgba(184,154,94,0.16), transparent 32%);
-    pointer-events: none;
-  }
-
-  .hero-left {
-    padding: 0;
-    max-width: 660px;
-  }
-
-  .hero-eyebrow,
-  .section-label {
-    letter-spacing: 0.18em;
-    color: var(--green-accent);
-  }
-
-  .hero-title {
-    max-width: 10ch;
-    font-size: clamp(4.2rem, 7.2vw, 7rem);
-    letter-spacing: 0;
-  }
-
-  .hero-subtitle {
-    max-width: 48ch;
-    color: #625d54;
-    font-size: 1rem;
-  }
-
-  .btn-primary,
-  .package-btn {
-    border-radius: 6px;
-    box-shadow: 0 16px 36px rgba(15,15,13,0.12);
-  }
-
-  .btn-ghost {
-    width: fit-content;
-    padding-bottom: 0.35rem;
-    border-bottom: 1px solid rgba(184,154,94,0.45);
-  }
-
-  .hero-right {
-    min-height: 660px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--cream);
-    box-shadow: 0 30px 80px rgba(15,15,13,0.1);
-  }
-
-  .hero-image-area {
-    position: absolute;
-    inset: 0;
-    padding: 2rem;
-    background:
-      linear-gradient(145deg, rgba(250,249,246,0.96), rgba(245,242,237,0.9)),
-      radial-gradient(circle at top right, rgba(184,154,94,0.22), transparent 35%);
-  }
-
-  .hero-geo,
-  .hero-badge,
-  .hero-scroll {
-    display: none;
-  }
-
-  .portfolio-panel {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 1.25rem;
-  }
-
-  .panel-top,
-  .panel-bottom {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .panel-kicker,
-  .panel-meta,
-  .asset-label,
-  .allocation-label,
-  .risk-label,
-  .signal-label {
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .panel-title {
-    margin-top: 0.45rem;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 400;
-  }
-
-  .panel-status {
-    padding: 0.55rem 0.75rem;
-    border: 1px solid rgba(61,90,71,0.24);
-    border-radius: 999px;
-    background: rgba(61,90,71,0.08);
-    color: var(--green-accent);
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  .asset-stack {
-    display: grid;
-    gap: 1rem;
-    align-content: center;
-  }
-
-  .asset-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 1rem;
-    align-items: center;
-    padding: 1.2rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: rgba(250,249,246,0.86);
-  }
-
-  .asset-name {
-    margin-top: 0.3rem;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.45rem;
-  }
-
-  .asset-value {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.7rem;
-    color: var(--gold);
-    white-space: nowrap;
-  }
-
-  .allocation-card {
-    padding: 1.3rem;
-    border: 1px solid rgba(184,154,94,0.28);
-    border-radius: 8px;
-    background: var(--ink);
-    color: var(--warm-white);
-  }
-
-  .allocation-bars {
-    display: grid;
-    gap: 0.85rem;
-    margin-top: 1.2rem;
-  }
-
-  .allocation-bars span {
-    display: block;
-    height: 8px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.12);
-    overflow: hidden;
-  }
-
-  .allocation-bars i {
-    display: block;
-    height: 100%;
-    width: var(--w);
-    background: linear-gradient(90deg, var(--gold), var(--gold-light));
-    border-radius: inherit;
-  }
-
-  .risk-card,
-  .signal-card {
-    flex: 1;
-    min-height: 118px;
-    padding: 1.1rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: rgba(250,249,246,0.84);
-  }
-
-  .risk-value,
-  .signal-value {
-    margin-top: 0.8rem;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    line-height: 1;
-  }
-
-  .signal-value {
-    color: var(--green-accent);
-  }
-
-  .hero-stat-block {
-    left: 2rem;
-    bottom: 2rem;
-    border: 1px solid rgba(184,154,94,0.32);
-    border-left: 3px solid var(--gold);
-    border-radius: 8px;
-    box-shadow: 0 18px 40px rgba(15,15,13,0.08);
-  }
-
-  .marquee-bar {
-    border-block: 1px solid rgba(184,154,94,0.28);
-  }
-
-  .section {
-    padding: 8rem 4rem;
-  }
-
-  .about,
-  .clients-section,
-  .process-inner,
-  .packages-header,
-  .packages-grid,
-  .tiers,
-  .footer-top,
-  .footer-bottom {
-    max-width: 1240px;
-  }
-
-  .section-heading,
-  .cta-heading {
-    letter-spacing: 0;
-  }
-
-  .body-text,
-  .service-sub,
-  .service-bullets li,
-  .client-desc,
-  .step-desc {
-    color: #625d54;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1px;
-    padding-top: 0;
-    border: 1px solid var(--border);
-    background: var(--border);
-  }
-
-  .stat-item {
-    padding: 1.35rem;
-    background: rgba(250,249,246,0.9);
-  }
-
-  .about-card-main,
-  .service-card,
-  .client-card,
-  .package-card,
-  .process-step {
-    border-radius: 8px;
-  }
-
-  .about-card-main {
-    border: 1px solid var(--border);
-    box-shadow: 0 24px 60px rgba(15,15,13,0.08);
-  }
-
-  .about-card-float {
-    right: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 18px 42px rgba(15,15,13,0.18);
-  }
-
-  .services-section {
-    background:
-      linear-gradient(180deg, var(--cream), rgba(250,249,246,0.96));
-  }
-
-  .services-grid,
-  .clients-grid,
-  .packages-grid {
-    gap: 1rem;
-    background: transparent;
-  }
-
-  .service-card,
-  .client-card {
-    border: 1px solid var(--border);
-    box-shadow: 0 18px 42px rgba(15,15,13,0.04);
-  }
-
-  .service-card:hover,
-  .client-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 24px 52px rgba(15,15,13,0.09);
-  }
-
-  .service-number {
-    color: rgba(184,154,94,0.26);
-  }
-
-  .clients-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-
-  .client-card {
-    padding: 2rem 1.55rem;
-  }
-
-  .client-icon {
-    width: 42px;
-    height: 42px;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgba(184,154,94,0.28);
-    border-radius: 50%;
-    color: var(--gold);
-    font-size: 1rem;
-  }
-
-  .packages-section {
-    background:
-      radial-gradient(circle at 20% 10%, rgba(184,154,94,0.14), transparent 34%),
-      var(--ink);
-  }
-
-  .package-card {
-    border-color: rgba(255,255,255,0.12);
-    box-shadow: 0 22px 60px rgba(0,0,0,0.2);
-  }
-
-  .package-card.featured {
-    background:
-      linear-gradient(180deg, rgba(61,90,71,1), rgba(47,70,56,1));
-  }
-
-  .process-steps {
-    gap: 1rem;
-  }
-
-  .process-steps::before {
-    display: none;
-  }
-
-  .process-step {
-    min-height: 230px;
-    padding: 2rem;
-    border: 1px solid var(--border);
-    background: rgba(250,249,246,0.82);
-    box-shadow: 0 18px 42px rgba(15,15,13,0.04);
-  }
-
-  .step-num::before {
-    display: none;
-  }
-
-  .cta-section {
-    background:
-      linear-gradient(135deg, rgba(245,242,237,0.96), rgba(250,249,246,0.96));
-    border-top: 1px solid var(--border);
-  }
-
-  .cta-inner {
-    max-width: 760px;
-  }
-
-  footer {
-    border-top: 1px solid rgba(184,154,94,0.24);
-  }
-
-  @media (max-width: 1100px) {
-    .hero {
-      grid-template-columns: 1fr;
-    }
-
-    .hero-right {
-      min-height: 540px;
-      display: block;
-    }
-
-    .clients-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 900px) {
-    nav {
-      left: 0.75rem;
-      right: 0.75rem;
-      top: 0.75rem;
-    }
-
-    .mobile-menu {
-      top: 83px;
-      left: 0.75rem;
-      right: 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-
-    .hero {
-      padding: 7rem 2rem 3rem;
-    }
-
-    .hero-right {
-      display: block;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .hero {
-      padding-inline: 1.25rem;
-    }
-
-    .hero-title {
-      max-width: 9ch;
-      font-size: clamp(3rem, 16vw, 4.25rem);
-    }
-
-    .hero-right {
-      min-height: 620px;
-    }
-
-    .hero-image-area {
-      padding: 1rem;
-    }
-
-    .panel-top,
-    .panel-bottom,
-    .asset-row {
-      align-items: flex-start;
-      flex-direction: column;
-      display: flex;
-    }
-
-    .asset-value {
-      font-size: 1.45rem;
-    }
-
-    .hero-stat-block {
-      left: 1rem;
-      right: 1rem;
-      bottom: 1rem;
-    }
-
-    .clients-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -1544,7 +30,7 @@
     <li><a href="#packages">Packages</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Evaluate your Portfolio</a>
+  <a href="#contact" class="nav-cta open-modal-btn" data-package="General Advisory">Evaluate your Portfolio</a>
   <button class="mobile-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
     <span class="mobile-toggle-lines" aria-hidden="true"><span></span><span></span></span>
   </button>
@@ -1554,12 +40,22 @@
   <a href="#services">Services</a>
   <a href="#clients">Who We Serve</a>
   <a href="#packages">Packages</a>
-  <a href="#contact">Evaluate your Portfolio</a>
+  <a href="#contact" class="open-modal-btn" data-package="General Advisory">Evaluate your Portfolio</a>
 </div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-left">
+  <!-- Background Video / Cinematic Slideshow -->
+  <div class="hero-video-wrap">
+    <div class="hero-slideshow">
+      <div class="hero-slide active" style="background-image: url('assets/hero_bg_1.png');"></div>
+      <div class="hero-slide" style="background-image: url('assets/hero_bg_2.png');"></div>
+      <div class="hero-slide" style="background-image: url('assets/hero_bg_3.png');"></div>
+    </div>
+    <div class="hero-overlay"></div>
+  </div>
+  <!-- Hero Content -->
+  <div class="hero-content">
     <p class="hero-eyebrow">Real Estate Portfolio Management & Advisory</p>
     <h1 class="hero-title">
       Your Property,<br>
@@ -1570,88 +66,53 @@
       We are not brokers. We are your dedicated real estate portfolio manager — managing your investments from acquisition to exit, for HNIs, NRIs and Family Offices.
     </p>
     <div class="hero-actions">
-      <a href="#services" class="btn-primary">Explore Services</a>
-      <a href="#packages" class="btn-ghost">View Packages</a>
+      <a href="#contact" class="btn-primary open-modal-btn" data-package="General Advisory">Schedule a Call</a>
+      <a href="#services" class="btn-ghost">Explore Services</a>
     </div>
-  </div>
-  <div class="hero-right">
-    <div class="hero-image-area">
-      <div class="portfolio-panel" aria-hidden="true">
-        <div class="panel-top">
-          <div>
-            <p class="panel-kicker">Portfolio Command</p>
-            <p class="panel-title">Real estate, actively governed.</p>
-          </div>
-          <span class="panel-status">Fiduciary Advisory</span>
-        </div>
-        <div class="asset-stack">
-          <div class="asset-row">
-            <div>
-              <p class="asset-label">Acquisition</p>
-              <p class="asset-name">Pre-vetted opportunities</p>
-            </div>
-            <p class="asset-value">10+</p>
-          </div>
-          <div class="asset-row">
-            <div>
-              <p class="asset-label">Governance</p>
-              <p class="asset-name">Legal, tax & compliance watch</p>
-            </div>
-            <p class="asset-value">24/7</p>
-          </div>
-          <div class="allocation-card">
-            <p class="allocation-label">Portfolio Allocation</p>
-            <div class="allocation-bars">
-              <span><i style="--w:72%"></i></span>
-              <span><i style="--w:48%"></i></span>
-              <span><i style="--w:64%"></i></span>
-            </div>
-          </div>
-        </div>
-        <div class="panel-bottom">
-          <div class="risk-card">
-            <p class="risk-label">Risk Review</p>
-            <p class="risk-value">Quarterly</p>
-          </div>
-          <div class="signal-card">
-            <p class="signal-label">Exit Planning</p>
-            <p class="signal-value">Strategic</p>
-          </div>
-        </div>
+    <div class="hero-trust">
+      <div class="hero-trust-item">
+        <span class="hero-trust-num">₹300Cr+</span>
+        <span class="hero-trust-label">AUM</span>
+      </div>
+      <div class="hero-trust-divider"></div>
+      <div class="hero-trust-item">
+        <span class="hero-trust-num">14+</span>
+        <span class="hero-trust-label">Service Categories</span>
+      </div>
+      <div class="hero-trust-divider"></div>
+      <div class="hero-trust-item">
+        <span class="hero-trust-num">100%</span>
+        <span class="hero-trust-label">Fiduciary</span>
       </div>
     </div>
-    <div class="hero-stat-block">
-      <div class="hero-stat-num">₹300Cr<span style="font-size:1.2rem;color:var(--gold)">+</span></div>
-      <div class="hero-stat-label">AUM</div>
-    </div>
-    <div class="hero-scroll">
-      <div class="scroll-line"></div>
-      <span>Scroll</span>
+  </div>
+  <a href="#about" class="hero-scroll" aria-label="Scroll down to About section">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </a>
+
+  <!-- MARQUEE -->
+  <div class="marquee-bar" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-item">Acquisition Advisory</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Due Diligence</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Portfolio Management</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">NRI Services</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Exit Strategy</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Tax Advisory</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Wealth Structuring</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Succession Planning</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Acquisition Advisory</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Due Diligence</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Portfolio Management</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">NRI Services</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Exit Strategy</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Tax Advisory</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Wealth Structuring</span><span class="marquee-dot">◆</span>
+      <span class="marquee-item">Succession Planning</span><span class="marquee-dot">◆</span>
     </div>
   </div>
 </section>
-
-<!-- MARQUEE -->
-<div class="marquee-bar" aria-hidden="true">
-  <div class="marquee-track">
-    <span class="marquee-item">Acquisition Advisory</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Due Diligence</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Portfolio Management</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">NRI Services</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Exit Strategy</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Tax Advisory</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Wealth Structuring</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Succession Planning</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Acquisition Advisory</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Due Diligence</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Portfolio Management</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">NRI Services</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Exit Strategy</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Tax Advisory</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Wealth Structuring</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Succession Planning</span><span class="marquee-dot">◆</span>
-  </div>
-</div>
 
 <!-- ABOUT -->
 <section class="section" id="about">
@@ -1901,7 +362,7 @@
         <li>Complete documentation & registration</li>
         <li>Timeline: 60–90 days to closing</li>
       </ul>
-      <a href="#contact" class="package-btn">Enquire Now</a>
+      <a href="#contact" class="package-btn open-modal-btn" data-package="Acquisition Advisory">Enquire Now</a>
     </div>
     <div class="package-card featured">
       <p class="package-tag">Package 02 · Most Popular</p>
@@ -1917,7 +378,7 @@
         <li>Financial reporting & tax coordination</li>
         <li>24/7 emergency response</li>
       </ul>
-      <a href="#contact" class="package-btn">Get Started</a>
+      <a href="#contact" class="package-btn open-modal-btn" data-package="Portfolio Management">Get Started</a>
     </div>
     <div class="package-card">
       <p class="package-tag">Package 03</p>
@@ -1933,7 +394,7 @@
         <li>Priority access to exclusive deals</li>
         <li>Ideal for ₹50Cr+ real estate AUM</li>
       </ul>
-      <a href="#contact" class="package-btn">Enquire Now</a>
+      <a href="#contact" class="package-btn open-modal-btn" data-package="Comprehensive Wealth Advisory">Enquire Now</a>
     </div>
   </div>
 </section>
@@ -1978,7 +439,7 @@
     <h2 class="cta-heading">Ready to make your<br>real estate work <em>harder</em>?</h2>
     <p class="cta-sub">Schedule a confidential discovery call with our advisory team. Whether you own one property or a family portfolio, we'll show you what active management can do.</p>
     <div class="cta-actions">
-      <a href="https://calendar.app.google/sbYCSaPszVr47v3V7" target="_blank" rel="noopener noreferrer" class="btn-primary">Schedule a Call</a>
+      <a href="#contact" class="btn-primary open-modal-btn" data-package="General Advisory">Schedule a Call</a>
       <a href="tel:+919599407988" class="btn-ghost" style="color:var(--ink)">Call Us</a>
     </div>
     <p style="margin-top:2.5rem;font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;">
@@ -2018,7 +479,7 @@
       <p class="footer-col-title">Contact</p>
       <ul class="footer-links">
         <li><a href="mailto:rai@raibyrai.com">rai@raibyrai.com</a></li>
-        <li><a href="https://calendar.app.google/sbYCSaPszVr47v3V7" target="_blank" rel="noopener noreferrer">Schedule a Call</a></li>
+        <li><a href="#contact" class="open-modal-btn" data-package="General Advisory">Schedule a Call</a></li>
         <li><a href="https://wa.me/919599407988" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
       </ul>
     </div>
@@ -2029,79 +490,72 @@
   </div>
 </footer>
 
-<script>
-  const nav = document.querySelector('nav');
-  const mobileToggle = document.querySelector('.mobile-toggle');
-  const mobileMenu = document.querySelector('#mobile-menu');
-  const copyrightYear = document.querySelector('#copyright-year');
-  const animatedItems = document.querySelectorAll('.fade-up');
+<!-- INQUIRY MODAL -->
+<div class="modal-overlay" id="inquiry-modal" aria-hidden="true">
+  <div class="modal-container">
+    <button class="modal-close" id="close-modal-btn" aria-label="Close modal">&times;</button>
+    <h3 class="modal-title">Evaluate your Portfolio</h3>
+    <p class="modal-subtitle">Leave your details and our advisory team will connect with you shortly.</p>
+    
+    <form id="inquiry-form" method="POST" action="submit_inquiry.php">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="form-name">Name</label>
+          <input type="text" id="form-name" name="name" class="form-control" placeholder="Your full name" required>
+        </div>
+        <div class="form-group">
+          <label for="form-phone">Phone Number</label>
+          <input type="tel" id="form-phone" name="phone" class="form-control" placeholder="With country code" required>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="form-email">Email Address</label>
+          <input type="email" id="form-email" name="email" class="form-control" placeholder="Your email address" required>
+        </div>
+        <div class="form-group">
+          <label for="form-location">Your Location</label>
+          <input type="text" id="form-location" name="location" class="form-control" placeholder="City / Country" required>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="form-package">Interested Package</label>
+          <select id="form-package" name="package" class="form-control" required>
+            <option value="General Advisory">General Advisory & Audit</option>
+            <option value="Acquisition Advisory">Package 01: Acquisition Advisory</option>
+            <option value="Portfolio Management">Package 02: Portfolio Management</option>
+            <option value="Comprehensive Wealth Advisory">Package 03: Comprehensive Wealth Advisory</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="form-budget">Investment Scale / Budget</label>
+          <select id="form-budget" name="budget" class="form-control" required>
+            <option value="Under ₹5Cr">Under ₹5 Crore</option>
+            <option value="₹5Cr - ₹10Cr">₹5 Crore - ₹10 Crore</option>
+            <option value="₹10Cr - ₹50Cr">₹10 Crore - ₹50 Crore</option>
+            <option value="₹50Cr+">₹50 Crore+</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="form-message">Brief Description of Portfolio / Requirements</label>
+        <textarea id="form-message" name="message" class="form-control" rows="4" placeholder="How can our fiduciary advisory team assist you?"></textarea>
+      </div>
+      
+      <button type="submit" class="submit-btn" id="submit-inquiry-btn">Submit Request</button>
+      <div class="form-status" id="form-status-msg"></div>
+    </form>
+  <!-- Back to Top Button -->
+  <button id="back-to-top" class="back-to-top-btn" aria-label="Back to Top">
+    <svg viewBox="0 0 24 24" width="24" height="24">
+      <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" fill="currentColor"></path>
+    </svg>
+  </button>
 
-  if (copyrightYear) {
-    copyrightYear.textContent = new Date().getFullYear();
-  }
-
-  const closeMobileMenu = () => {
-    if (!mobileToggle || !mobileMenu) return;
-    mobileToggle.setAttribute('aria-expanded', 'false');
-    mobileToggle.setAttribute('aria-label', 'Open navigation menu');
-    mobileMenu.classList.remove('open');
-    mobileMenu.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('menu-open');
-  };
-
-  if (mobileToggle && mobileMenu) {
-    mobileToggle.addEventListener('click', () => {
-      const isOpen = mobileToggle.getAttribute('aria-expanded') === 'true';
-      mobileToggle.setAttribute('aria-expanded', String(!isOpen));
-      mobileToggle.setAttribute('aria-label', isOpen ? 'Open navigation menu' : 'Close navigation menu');
-      mobileMenu.classList.toggle('open', !isOpen);
-      mobileMenu.setAttribute('aria-hidden', String(isOpen));
-      document.body.classList.toggle('menu-open', !isOpen);
-    });
-
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', closeMobileMenu);
-    });
-
-    window.addEventListener('keydown', event => {
-      if (event.key === 'Escape') closeMobileMenu();
-    });
-
-    window.addEventListener('resize', () => {
-      if (window.innerWidth > 900) closeMobileMenu();
-    });
-  }
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('visible');
-          }, 100);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    animatedItems.forEach(el => observer.observe(el));
-  } else {
-    animatedItems.forEach(el => el.classList.add('visible'));
-  }
-
-  const syncNavPadding = () => {
-    if (!nav) return;
-    const mobile = window.innerWidth <= 900;
-    if (mobile) {
-      nav.style.padding = window.innerWidth <= 560 ? '0.9rem 1.25rem' : '1rem 2rem';
-      return;
-    }
-    nav.style.padding = window.scrollY > 60 ? '1rem 4rem' : '1.4rem 4rem';
-  };
-
-  window.addEventListener('scroll', syncNavPadding);
-  window.addEventListener('resize', syncNavPadding);
-  syncNavPadding();
-</script>
+  <script src="script.js" defer></script>
 </body>
 </html>
